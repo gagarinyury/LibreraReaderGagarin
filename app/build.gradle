@@ -108,9 +108,9 @@ android {
         fdroid {
             minSdk = libs.versions.minSdk.get().toInteger()
             dimension = "version"
-            applicationId = "com.foobnix.pro.pdf.reader"
+            applicationId = "com.gagarin.librera.snoop"
             manifestPlaceholders = [
-                    appName      : "Librera FD",
+                    appName      : "Librera Snoop",
                     appIcon      : "@mipmap/icon_pdf_pro",
                     appRoundIcon : "@mipmap/icon_pdf_pro",
                     appGdriveKey : "",

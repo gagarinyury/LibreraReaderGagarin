@@ -31,14 +31,12 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/libs.versions.toml') }}
           restore-keys: gradle-
 
-      - name: Build fdroid release APK
-        run: ./gradlew :app:assembleFdroidRelease --no-daemon
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+      - name: Build fdroid debug APK
+        run: ./gradlew :app:assembleFdroidDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Librera-FD-no-ads
-          path: app/build/outputs/apk/fdroid/release/*.apk
+          name: Librera-Snoop
+          path: app/build/outputs/apk/fdroid/debug/*.apk
           retention-days: 30
