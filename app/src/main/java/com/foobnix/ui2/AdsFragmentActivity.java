@@ -174,12 +174,8 @@ public abstract class AdsFragmentActivity extends FragmentActivity {
         TempHolder.get().loadingCancelled.set(true);
         IMG.pauseRequests(this);
         TTSNotification.hideNotification();
-        TTSEngine.get().shutdown();
-//        if (ADS.secondsRemain(timeActivityCreated) > FULL_SCREEN_TIMEOUT_SEC) {
-//
-//        } else {
-//            LOG.d("ADS1 showInterstitial skip",ADS.secondsRemain(timeActivityCreated));
-//        }
+        // TTSEngine.get().shutdown() removed: in ad-free builds the engine was
+        // shut down here and never restarted, making the TTS play button unresponsive.
         ADS.get().showInterstitial(this);
         onFinishActivity();
     }
