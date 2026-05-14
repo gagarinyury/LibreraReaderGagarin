@@ -31,7 +31,7 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/libs.versions.toml') }}
           restore-keys: gradle-
 
-      - name: Inject empty gradle properties
+      - name: Inject gradle properties
         run: |
           cat >> gradle.properties << 'EOF'
           librera_appGdriveKey=
@@ -65,6 +65,10 @@ jobs:
           epub_reader_admobBannerId=
           epub_reader_admobFullId=
           epub_reader_admobRewardId=
+          RELEASE_STORE_FILE=librera-snoop.keystore
+          RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
           EOF
 
       - name: Create dummy google-services.json
@@ -88,12 +92,15 @@ jobs:
           }
           EOF
 
-      - name: Build fdroid debug APK
-        run: ./gradlew :app:assembleFdroidDebug --no-daemon
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/librera-snoop.keystore
+
+      - name: Build fdroid release APK
+        run: ./gradlew :app:assembleFdroidRelease --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Librera-Snoop
-          path: app/build/outputs/apk/fdroid/debug/*.apk
+          name: Librera-Snoop-Release
+          path: app/build/outputs/apk/fdroid/release/*.apk
           retention-days: 30
